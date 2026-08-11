@@ -1,4 +1,4 @@
-*This project has been created as part of the 42 curriculum by <login>.*
+*This project has been created as part of the 42 curriculum by gpecelli.*
 
 ## Description
 Codexion is a concurrency simulation built in C that models a group of coders sharing limited resources. Several coders sit in a circular inclusive co-working hub and must share "quantum USB dongles" to compile their code. 
@@ -51,4 +51,7 @@ Run the simulation by providing the required parameters:
 ## Resources
 - [POSIX Threads Programming](https://computing.llnl.gov/tutorials/pthreads/) - Classic reference for `pthreads`.
 - [Coffman's Conditions](https://en.wikipedia.org/wiki/Deadlock) - Understanding deadlocks and how to prevent them in operating systems.
+- [Introduction To Threads (pthreads) | C Programming Tutorial](https://youtu.be/ldJ8WGZVXZk?si=-MsHwkjzMGNp8tnJ)
+- [Mutex Introduction (pthreads) | C Programming Tutorial](https://youtu.be/raLCgPK-Igc?si=BHPHN_PRpYPoPsq0)
+- [What is a mutex in C? (pthread_mutex)](https://youtu.be/oq29KUy29iQ?si=t5NtU8w999Sym8Mp)
 - **AI Usage**: AI was primarily utilized during the development of this project for debugging concurrency issues, providing insights on thread-safe data structures like the priority queue (heap), and formatting this very documentation according to the project specifications.
