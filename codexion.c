@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/07 11:50:22 by marvin            #+#    #+#             */
-/*   Updated: 2026/08/10 16:17:56 by marvin           ###   ########.fr       */
+/*   Updated: 2026/08/12 11:29:59 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,5 +69,6 @@ int	main(int argc, char **argv)
 		i++;
 	}
 	pthread_join(monitor_thread, NULL);
+	finish_program(&table);
 	return (0);
 }

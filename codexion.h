@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/10 13:00:46 by marvin            #+#    #+#             */
-/*   Updated: 2026/08/11 11:49:26 by marvin           ###   ########.fr       */
+/*   Updated: 2026/08/12 11:48:18 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,7 @@ void				take_dongles(t_coder *coder, t_table *table);
 void				release_dongles(t_coder *coder, t_table *table);
 long long			get_time(void);
 void				print_status(t_table *table, int id, char *status);
+void				finish_program(t_table *table);
 
 /*
 ** codexion.c / monitor.c

@@ -1,23 +1,44 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_heap.c                                        :+:      :+:    :+:   */
+/*   heap.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/09 15:16:19 by marvin            #+#    #+#             */
-/*   Updated: 2026/08/09 15:16:19 by marvin           ###   ########.fr       */
+/*   Updated: 2026/08/12 19:15:00 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
+/*
+** TIE-BREAKER LOGIC:
+** - Case A (FIFO): Priorities are all forced to 0.
+**   Since they are equal (and equal to 0), the Heap uses 'ticket'.
+**   The swap respects who arrived first (OS scheduler choice).
+** - Case B (EDF): At the first round (and in ties), priorities are
+**   equal but different from 0 (e.g. 200). In this case, the Heap
+**   uses 'coder_id'. The swap ignores the random arrival order and
+**   aligns them in a 100% deterministic way, as required!
+*/
 int	more_urgent(t_heap_node a, t_heap_node b)
 {
 	if (a.priority < b.priority)
 		return (1);
-	if (a.ticket < b.ticket && a.priority == b.priority)
-		return (1);
+	if (a.priority == b.priority)
+	{
+		if (a.priority == 0)
+		{
+			if (a.ticket < b.ticket)
+				return (1);
+		}
+		else
+		{
+			if (a.coder_id < b.coder_id)
+				return (1);
+		}
+	}
 	return (0);
 }
 
