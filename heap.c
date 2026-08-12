@@ -6,14 +6,14 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/09 15:16:19 by marvin            #+#    #+#             */
-/*   Updated: 2026/08/12 19:15:00 by marvin           ###   ########.fr       */
+/*   Updated: 2026/08/12 19:54:20 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
 /*
-** TIE-BREAKER LOGIC:
+** Array sorting rule:
 ** - Case A (FIFO): Priorities are all forced to 0.
 **   Since they are equal (and equal to 0), the Heap uses 'ticket'.
 **   The swap respects who arrived first (OS scheduler choice).
