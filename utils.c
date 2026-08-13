@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/07 11:50:28 by marvin            #+#    #+#             */
-/*   Updated: 2026/08/13 16:38:57 by marvin           ###   ########.fr       */
+/*   Updated: 2026/08/13 16:47:32 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ long long	get_time(void)
 void	print_status(t_table *table, int id, char *status)
 {
 	pthread_mutex_lock(&table->print_mutex);
-	if (table->simulation_running == 1)
+	if (get_simulation_status(table) == 1)
 		printf("%lld %d %s\n", get_time(), id, status);
 	pthread_mutex_unlock(&table->print_mutex);
 }

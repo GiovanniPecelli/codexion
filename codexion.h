@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/10 13:00:46 by marvin            #+#    #+#             */
-/*   Updated: 2026/08/13 16:38:13 by marvin           ###   ########.fr       */
+/*   Updated: 2026/08/13 16:49:22 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,7 @@ void				set_simulation_status(t_table *table, int status);
 */
 void				*coder_routine(void *arg);
 void				*monitor_routine(void *arg);
+void				terminate_simulation(t_table *table);
 /*
 ** heap.c / heap_utils.c
 */

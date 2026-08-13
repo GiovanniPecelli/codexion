@@ -6,13 +6,13 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/08 17:34:20 by marvin            #+#    #+#             */
-/*   Updated: 2026/08/13 16:38:45 by marvin           ###   ########.fr       */
+/*   Updated: 2026/08/13 16:49:00 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
-static void	terminate_simulation(t_table *table)
+void	terminate_simulation(t_table *table)
 {
 	set_simulation_status(table, 0);
 	pthread_mutex_lock(&table->arbiter);
