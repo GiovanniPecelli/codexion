@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/07 11:50:28 by marvin            #+#    #+#             */
-/*   Updated: 2026/08/12 11:56:04 by marvin           ###   ########.fr       */
+/*   Updated: 2026/08/13 11:41:10 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ void	finish_program(t_table *table)
 	pthread_mutex_destroy(&table->arbiter);
 	pthread_mutex_destroy(&table->print_mutex);
 	pthread_cond_destroy(&table->queue);
-
 	free(table->dongle_state);
 	free(table->coders);
 	free(table->waitlist.array);

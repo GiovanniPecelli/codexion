@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/07 11:50:22 by marvin            #+#    #+#             */
-/*   Updated: 2026/08/12 11:29:59 by marvin           ###   ########.fr       */
+/*   Updated: 2026/08/13 11:58:59 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,21 +53,17 @@ int	main(int argc, char **argv)
 		return (-1);
 	if (init_table(&table) == -1)
 		return (-1);
-	i = 0;
-	while (i < table.rules.num_coders)
+	i = -1;
+	while (++i < table.rules.num_coders)
 	{
 		if (pthread_create(&table.coders[i].thread_id, NULL, &coder_routine,
 				&table.coders[i]) != 0)
 			return (-1);
-		i++;
 	}
 	pthread_create(&monitor_thread, NULL, &monitor_routine, &table);
 	i = 0;
 	while (i < table.rules.num_coders)
-	{
-		pthread_join(table.coders[i].thread_id, NULL);
-		i++;
-	}
+		pthread_join(table.coders[i++].thread_id, NULL);
 	pthread_join(monitor_thread, NULL);
 	finish_program(&table);
 	return (0);

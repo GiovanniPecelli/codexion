@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/07 17:11:20 by marvin            #+#    #+#             */
-/*   Updated: 2026/08/12 20:47:42 by marvin           ###   ########.fr       */
+/*   Updated: 2026/08/13 11:40:56 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,9 @@ long long	get_max_cooldown(long long left_cooldown, long long right_cooldown)
 	return (right_cooldown);
 }
 
+/*
+** take_dongles: (require: wait_for_dongles())
+*/
 static void	wait_for_dongles(t_coder *coder, t_table *table)
 {
 	long long		max_cooldown;
