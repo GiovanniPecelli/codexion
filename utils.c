@@ -6,11 +6,28 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/07 11:50:28 by marvin            #+#    #+#             */
-/*   Updated: 2026/08/13 11:41:10 by marvin           ###   ########.fr       */
+/*   Updated: 2026/08/13 16:38:57 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
+
+int	get_simulation_status(t_table *table)
+{
+	int	status;
+
+	pthread_mutex_lock(&table->state_mutex);
+	status = table->simulation_running;
+	pthread_mutex_unlock(&table->state_mutex);
+	return (status);
+}
+
+void	set_simulation_status(t_table *table, int status)
+{
+	pthread_mutex_lock(&table->state_mutex);
+	table->simulation_running = status ;
+	pthread_mutex_unlock(&table->state_mutex);
+}
 
 /*
 ** Retrieves the current real time using gettimeofday.
@@ -38,6 +55,7 @@ void	finish_program(t_table *table)
 {
 	pthread_mutex_destroy(&table->arbiter);
 	pthread_mutex_destroy(&table->print_mutex);
+	pthread_mutex_destroy(&table->state_mutex);
 	pthread_cond_destroy(&table->queue);
 	free(table->dongle_state);
 	free(table->coders);

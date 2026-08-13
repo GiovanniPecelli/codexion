@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/07 17:11:20 by marvin            #+#    #+#             */
-/*   Updated: 2026/08/13 11:40:56 by marvin           ###   ########.fr       */
+/*   Updated: 2026/08/13 16:05:02 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static void	wait_for_dongles(t_coder *coder, t_table *table)
 	long long		max_cooldown;
 	struct timespec	ts;
 
-	while (table->simulation_running == 1
+	while (get_simulation_status(coder->table) == 1
 		&& (table->dongle_state[coder->left_dongle_id] == 1
 			|| table->dongle_state[coder->right_dongle_id] == 1
 			|| get_time() < get_max_cooldown(

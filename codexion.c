@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/07 11:50:22 by marvin            #+#    #+#             */
-/*   Updated: 2026/08/13 11:58:59 by marvin           ###   ########.fr       */
+/*   Updated: 2026/08/13 16:02:14 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	*coder_routine(void *arg)
 	t_coder	*coder;
 
 	coder = (t_coder *)arg;
-	while (coder->table->simulation_running == 1)
+	while (get_simulation_status(coder->table) == 1)
 	{
 		take_dongles(coder, coder->table);
 		print_status(coder->table, coder->id, "has taken a dongle");

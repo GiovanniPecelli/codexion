@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/07 14:43:26 by marvin            #+#    #+#             */
-/*   Updated: 2026/08/11 12:00:03 by marvin           ###   ########.fr       */
+/*   Updated: 2026/08/13 16:35:24 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,8 @@ int	init_table(t_table *table)
 	if (pthread_mutex_init(&table->arbiter, NULL) != 0)
 		return (-1);
 	if (pthread_mutex_init(&table->print_mutex, NULL) != 0)
+		return (-1);
+	if (pthread_mutex_init(&table->state_mutex, NULL) != 0)
 		return (-1);
 	if (pthread_cond_init(&table->queue, NULL) != 0)
 		return (-1);

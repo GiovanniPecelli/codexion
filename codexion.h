@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/10 13:00:46 by marvin            #+#    #+#             */
-/*   Updated: 2026/08/12 11:48:18 by marvin           ###   ########.fr       */
+/*   Updated: 2026/08/13 16:38:13 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ typedef struct s_heap
 ** broadcast: wake up all threads
 ** signal: wake up only one thread
 ** -- rules is a bag (type t_rules) inside the table memory
+** queue: is a condition variable - generate an hidden coders sleeping list
 */
 typedef struct s_table
 {
@@ -80,6 +81,7 @@ typedef struct s_table
 	int				simulation_running;
 	pthread_mutex_t	arbiter;
 	pthread_mutex_t	print_mutex;
+	pthread_mutex_t	state_mutex;
 	pthread_cond_t	queue;
 	t_heap			waitlist;
 }					t_table;
@@ -105,6 +107,8 @@ void				release_dongles(t_coder *coder, t_table *table);
 long long			get_time(void);
 void				print_status(t_table *table, int id, char *status);
 void				finish_program(t_table *table);
+int					get_simulation_status(t_table *table);
+void				set_simulation_status(t_table *table, int status);
 
 /*
 ** codexion.c / monitor.c
