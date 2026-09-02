@@ -1,5 +1,13 @@
 NAME = codexion
 CC = cc
+
+
+# ============== Compiling with -pthread ==================
+# -pthread link a library and tells the compiler to define
+# certain macros used behind the scenes.
+# This ensures that standard C functions used in the
+# program code behave in a thread-safe manner
+# =========================================================
 CFLAGS = -Wall -Wextra -Werror -pthread
 
 SRCS = codexion.c monitor.c\

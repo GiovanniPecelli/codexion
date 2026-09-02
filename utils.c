@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/07 11:50:28 by marvin            #+#    #+#             */
-/*   Updated: 2026/08/13 16:47:32 by marvin           ###   ########.fr       */
+/*   Updated: 2026/09/02 12:23:25 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,11 @@ void	set_simulation_status(t_table *table, int status)
 ** Retrieves the current real time using gettimeofday.
 ** Converts seconds and microseconds into a single millisecond timestamp.
 ** Returns -1 on failure.
+** Real-time includes the time the CPU spent working on other background
+** programs while your program was paused waiting its turn.
+** CPU time only counts the time the CPU was actually executing your code.
+**		• Waiting for I/O (Input/Output): If your program has to read a large
+**		  file from the hard drive or wait for a network response, it pauses.
 */
 long long	get_time(void)
 {
@@ -47,7 +52,7 @@ void	print_status(t_table *table, int id, char *status)
 {
 	pthread_mutex_lock(&table->print_mutex);
 	if (get_simulation_status(table) == 1)
-		printf("%lld %d %s\n", get_time(), id, status);
+		printf("%lld %d %s\n", get_time() - table->start_time, id, status);
 	pthread_mutex_unlock(&table->print_mutex);
 }
 

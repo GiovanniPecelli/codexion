@@ -1,5 +1,12 @@
+# Folder
+/codexion_tester
+
+# Markdown and PDF file
 en.md
+knowledge.md
 en.subject.pdf
+
+# Executable and file
 codexion
 *.o
-knowledge.md
+*.sh

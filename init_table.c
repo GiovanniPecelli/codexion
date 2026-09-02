@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/07 14:43:26 by marvin            #+#    #+#             */
-/*   Updated: 2026/08/13 16:35:24 by marvin           ###   ########.fr       */
+/*   Updated: 2026/09/02 13:05:11 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,16 @@ int	table_allocation(t_table *table)
 	{
 		free(table->dongle_state);
 		free(table->coders);
-		free(table->waitlist.array);
 		return (-1);
 	}
 	return (0);
 }
 
+/*
+** right_dongle_id is (i + 1) % table->rules.num_coders;
+** IF ex: 5 > num_coders(4) -> 5 % 4 = 1
+** last coder's right dongle is the first coder's left dongle
+*/
 static void	init_coders(t_table *table)
 {
 	int	i;
@@ -51,7 +55,7 @@ static void	init_coders(t_table *table)
 		table->dongle_cooldown_end[i] = 0;
 		table->coders[i].id = i + 1;
 		table->coders[i].compiles_done = 0;
-		table->coders[i].last_compile_time = get_time();
+		table->coders[i].last_compile_time = 0;
 		table->coders[i].left_dongle_id = i;
 		table->coders[i].right_dongle_id = (i + 1) % table->rules.num_coders;
 		table->coders[i].rules = &table->rules;

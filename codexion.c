@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/07 11:50:22 by marvin            #+#    #+#             */
-/*   Updated: 2026/08/13 17:24:29 by marvin           ###   ########.fr       */
+/*   Updated: 2026/09/02 12:42:40 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,14 +45,21 @@ void	*coder_routine(void *arg)
 	return (NULL);
 }
 
+/*
+** table->coders[i].last_compile_time is signed here because
+** the program need to take the relative start_time of the program
+** 
+*/
 int	start_simulation(t_table *table)
 {
 	int			i;
 	pthread_t	monitor_thread;
 
+	table->start_time = get_time();
 	i = -1;
 	while (++i < table->rules.num_coders)
 	{
+		table->coders[i].last_compile_time = table->start_time;
 		if (pthread_create(&table->coders[i].thread_id, NULL, &coder_routine,
 				&table->coders[i]) != 0)
 		{
@@ -76,13 +83,13 @@ int	main(int argc, char **argv)
 	t_table		table;
 
 	if (init_rules(argc, argv, &table.rules) == -1)
-		return (-1);
+		return (1);
 	if (init_table(&table) == -1)
-		return (-1);
+		return (1);
 	if (start_simulation(&table) == -1)
 	{
 		finish_program(&table);
-		return (-1);
+		return (1);
 	}
 	finish_program(&table);
 	return (0);

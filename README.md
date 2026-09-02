@@ -34,6 +34,23 @@ Run the simulation by providing the required parameters:
 - `dongle_cooldown`: Milliseconds a dongle must cool down before being used again.
 - `scheduler`: `fifo` (First In, First Out) or `edf` (Earliest Deadline First).
 
+### Checking for Memory Leaks
+To ensure there are no memory leaks, you can compile the project with AddressSanitizer or run it using Valgrind.
+
+**Using AddressSanitizer (fsanitize):**
+Compile with the `-fsanitize=address -g3` flags by temporarily modifying your `Makefile`'s `CFLAGS`, then run:
+```bash
+make re
+./codexion 5 800 200 200 200 5 10 fifo
+```
+
+**Using Valgrind:**
+```bash
+make
+valgrind --leak-check=full --show-leak-kinds=all ./codexion 5 800 200 200 200 5 10 fifo
+```
+*Note: Do not use Valgrind and fsanitize at the same time.*
+
 ## Blocking cases handled
 
 - **Deadlock Prevention**: Deadlocks occur if every coder simultaneously grabs their left dongle and waits indefinitely for the right dongle. This is mitigated through controlled dongle acquisition, ensuring that resources are only granted when the arbitration queue allows it.

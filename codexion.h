@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/10 13:00:46 by marvin            #+#    #+#             */
-/*   Updated: 2026/08/13 16:49:22 by marvin           ###   ########.fr       */
+/*   Updated: 2026/09/02 12:21:00 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ typedef struct s_table
 	t_rules			rules;
 	t_coder			*coders;
 	int				*dongle_state;
+	long long		start_time;
 	long long		*dongle_cooldown_end;
 	int				simulation_running;
 	pthread_mutex_t	arbiter;
