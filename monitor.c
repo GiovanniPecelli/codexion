@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/08 17:34:20 by marvin            #+#    #+#             */
-/*   Updated: 2026/08/13 16:49:00 by marvin           ###   ########.fr       */
+/*   Updated: 2026/09/02 18:40:34 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	terminate_simulation(t_table *table)
 static int	check_burnout(t_table *table)
 {
 	long long	last_time;
+	int			done;
 	int			i;
 
 	i = 0;
@@ -30,11 +31,19 @@ static int	check_burnout(t_table *table)
 	{
 		pthread_mutex_lock(&table->state_mutex);
 		last_time = table->coders[i].last_compile_time;
+		done = table->coders[i].compiles_done;
 		pthread_mutex_unlock(&table->state_mutex);
+		if (table->rules.compiles_required > 0
+			&& done >= table->rules.compiles_required)
+		{
+			i++;
+			continue ;
+		}
 		if ((get_time() - last_time) >= table->rules.time_to_burnout)
 		{
 			pthread_mutex_lock(&table->print_mutex);
-			printf("%lld %d burned out\n", get_time(), table->coders[i].id);
+			printf("%lld %d burned out\n",
+				get_time() - table->start_time, table->coders[i].id);
 			pthread_mutex_unlock(&table->print_mutex);
 			terminate_simulation(table);
 			return (0);
@@ -55,8 +64,10 @@ static int	check_complete(t_table *table)
 	finished = 0;
 	while (i < table->rules.num_coders)
 	{
+		pthread_mutex_lock(&table->state_mutex);
 		if (table->coders[i].compiles_done >= table->rules.compiles_required)
 			finished++;
+		pthread_mutex_unlock(&table->state_mutex);
 		i++;
 	}
 	if (finished == table->rules.num_coders)

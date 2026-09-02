@@ -6,12 +6,19 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/09 16:52:53 by marvin            #+#    #+#             */
-/*   Updated: 2026/08/11 11:43:36 by marvin           ###   ########.fr       */
+/*   Updated: 2026/09/02 18:07:09 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
+/*
+** waitlist is a custom var -> type -> t_heap
+** t_heap contain: array, size, max_size, ticket_gen
+	ticket_gen is a generator: every time a coder is pushed in the array
+	the program take the current value of ticket_gen (like a counter)
+** array contain: id, ticket, prority
+*/
 int	init_heap(t_table *table)
 {
 	table->waitlist.array = malloc(sizeof(t_heap_node)
@@ -24,6 +31,9 @@ int	init_heap(t_table *table)
 	return (1);
 }
 
+/*
+** this function fill the t_heap array[] values
+*/
 void	push_heap(t_heap *heap, int coder_id, long long priority)
 {
 	int	index;

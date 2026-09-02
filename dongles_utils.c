@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/07 17:11:20 by marvin            #+#    #+#             */
-/*   Updated: 2026/08/13 16:05:02 by marvin           ###   ########.fr       */
+/*   Updated: 2026/09/02 18:14:24 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,27 @@ long long	get_max_cooldown(long long left_cooldown, long long right_cooldown)
 	return (right_cooldown);
 }
 
+static int	share_dongles(t_coder *coder1, t_coder *coder2)
+{
+	if (coder1->left_dongle_id == coder2->left_dongle_id
+		|| coder1->left_dongle_id == coder2->right_dongle_id)
+		return (1);
+	if (coder1->right_dongle_id == coder2->right_dongle_id
+		|| coder1->right_dongle_id == coder2->left_dongle_id)
+		return (1);
+	return (0);
+}
+
 /*
 ** take_dongles: (require: wait_for_dongles())
+** IF (get_time() < max_cooldown):
+	say: if the dongle is already free but is in the cooldown state
+	set the clock
+** ELSE:
+	it mean that a thread is using the dongle and when it will end
+	his process, it will call "broadcast" to wake-up the sleep thread
+** get_max_cooldown() need left_dongle ad right_dongle READY
+** TS: is the time required from timedwait() to set the wake-up hour
 */
 static void	wait_for_dongles(t_coder *coder, t_table *table)
 {
@@ -33,7 +52,12 @@ static void	wait_for_dongles(t_coder *coder, t_table *table)
 			|| get_time() < get_max_cooldown(
 				table->dongle_cooldown_end[coder->left_dongle_id],
 				table->dongle_cooldown_end[coder->right_dongle_id])
-			|| table->waitlist.array[0].coder_id != coder->id)
+			|| (table->waitlist.size > 0
+				&& table->waitlist.array[0].coder_id != coder->id
+				&& share_dongles(
+					coder,
+					&table->coders[table->waitlist.array[0].coder_id - 1]
+				)))
 	)
 	{
 		max_cooldown = get_max_cooldown(
@@ -66,7 +90,7 @@ static void	wait_for_dongles(t_coder *coder, t_table *table)
 */
 void	take_dongles(t_coder *coder, t_table *table)
 {
-	long long		priority;
+	long long	priority;
 
 	if (table->rules.is_fifo == 1)
 		priority = 0;
@@ -84,17 +108,19 @@ void	take_dongles(t_coder *coder, t_table *table)
 	pthread_mutex_unlock(&table->arbiter);
 }
 
+/*
+** ready_time say whan a dongle resume from the cooldown time
+*/
 void	release_dongles(t_coder *coder, t_table *table)
 {
 	long long	ready_time;
 
 	pthread_mutex_lock(&table->arbiter);
-	table->dongle_state[coder->id - 1] = 0;
-	table->dongle_state[coder->id % table->rules.num_coders] = 0;
+	table->dongle_state[coder->left_dongle_id] = 0;
+	table->dongle_state[coder->right_dongle_id] = 0;
 	ready_time = get_time() + coder->rules->dongle_cooldown;
-	table->dongle_cooldown_end[coder->id - 1] = ready_time;
-	table->dongle_cooldown_end[coder->id
-		% table->rules.num_coders] = ready_time;
+	table->dongle_cooldown_end[coder->left_dongle_id] = ready_time;
+	table->dongle_cooldown_end[coder->right_dongle_id] = ready_time;
 	pthread_cond_broadcast(&table->queue);
 	pthread_mutex_unlock(&table->arbiter);
 }

@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/07 11:50:22 by marvin            #+#    #+#             */
-/*   Updated: 2026/09/02 12:42:40 by marvin           ###   ########.fr       */
+/*   Updated: 2026/09/02 18:13:28 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,18 +29,25 @@ void	*coder_routine(void *arg)
 	}
 	while (get_simulation_status(coder->table) == 1)
 	{
+		if (coder->rules->compiles_required > 0
+			&& coder->compiles_done >= coder->rules->compiles_required)
+			break ;
 		take_dongles(coder, coder->table);
 		print_status(coder->table, coder->id, "has taken a dongle");
 		print_status(coder->table, coder->id, "has taken a dongle");
 		print_status(coder->table, coder->id, "is compiling");
+		pthread_mutex_lock(&coder->table->state_mutex);
 		coder->last_compile_time = get_time();
-		usleep(coder->rules->time_to_compile * 1000);
+		pthread_mutex_unlock(&coder->table->state_mutex);
+		ft_usleep(coder->rules->time_to_compile, coder->table);
+		pthread_mutex_lock(&coder->table->state_mutex);
 		coder->compiles_done++;
+		pthread_mutex_unlock(&coder->table->state_mutex);
 		release_dongles(coder, coder->table);
 		print_status(coder->table, coder->id, "is debugging");
-		usleep(coder->rules->time_to_debug * 1000);
+		ft_usleep(coder->rules->time_to_debug, coder->table);
 		print_status(coder->table, coder->id, "is refactoring");
-		usleep(coder->rules->time_to_refactor * 1000);
+		ft_usleep(coder->rules->time_to_refactor, coder->table);
 	}
 	return (NULL);
 }

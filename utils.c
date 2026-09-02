@@ -6,11 +6,24 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/07 11:50:28 by marvin            #+#    #+#             */
-/*   Updated: 2026/09/02 12:23:25 by marvin           ###   ########.fr       */
+/*   Updated: 2026/09/02 18:21:57 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
+
+void	ft_usleep(long long time_to_compile, t_table *table)
+{
+	long long	start;
+
+	start = get_time();
+	while ((get_time() - start) < time_to_compile)
+	{
+		if (get_simulation_status(table) == 0)
+			break ;
+		usleep(500);
+	}
+}
 
 int	get_simulation_status(t_table *table)
 {

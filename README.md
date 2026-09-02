@@ -51,6 +51,24 @@ valgrind --leak-check=full --show-leak-kinds=all ./codexion 5 800 200 200 200 5 
 ```
 *Note: Do not use Valgrind and fsanitize at the same time.*
 
+**Using Helgrind**
+
+Summary Checklist for Reading Helgrind: 
+1. Find the functions: Look at the at 0x...: lines to
+see the two functions conflicting (e.g., check_complete
+vs coder_routine). 
+2. Find the memory block: Look at the Address 0x... is 
+X bytes inside a block alloc'd by... to figure out 
+which variable or array was malloc'd.
+3. Identify the variable: Match the size of the block
+and the allocation function (table_allocation) to
+figure out exactly what struct or array the variable 
+belongs to.
+4. Check the locks: Notice that Helgrind says Locks
+held: none. This confirms that the thread was accessing
+the variable without having pthread_mutex_lock wrapped 
+around it.
+
 ## Blocking cases handled
 
 - **Deadlock Prevention**: Deadlocks occur if every coder simultaneously grabs their left dongle and waits indefinitely for the right dongle. This is mitigated through controlled dongle acquisition, ensuring that resources are only granted when the arbitration queue allows it.
