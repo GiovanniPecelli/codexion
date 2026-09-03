@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heap.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: gpecelli <gpecelli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/09 15:16:19 by marvin            #+#    #+#             */
-/*   Updated: 2026/08/12 19:54:20 by marvin           ###   ########.fr       */
+/*   Updated: 2026/09/03 12:01:22 by gpecelli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,9 @@ int	more_urgent(t_heap_node a, t_heap_node b)
 	return (0);
 }
 
+/*
+** heapify_up move up the coder based on is urgent
+*/
 void	heapify_up(t_heap *heap, int index)
 {
 	int			parent;
@@ -62,6 +65,9 @@ void	heapify_up(t_heap *heap, int index)
 	}
 }
 
+/*
+** heapify_up move down the coder based on is urgent
+*/
 void	heapify_down(t_heap *heap, int index)
 {
 	int			left;
@@ -89,16 +95,13 @@ void	heapify_down(t_heap *heap, int index)
 	}
 }
 
-void	pop_heap(t_heap *heap)
-{
-	t_heap_node	last_node;
-
-	last_node = heap->array[heap->size - 1];
-	heap->array[0] = last_node;
-	heap->size = heap->size - 1;
-	heapify_down(heap, 0);
-}
-
+/*
+** remove_heap_node: remove the node matching coder_id from the heap.
+** The last node is moved into the freed slot, the heap size is reduced,
+** and then the heap is repaired by bubbling the node up or down so the
+** priority ordering remains valid.
+** If the coder is not present, the function does nothing.
+*/
 void	remove_heap_node(t_heap *heap, int coder_id)
 {
 	int	i;

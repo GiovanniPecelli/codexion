@@ -6,7 +6,7 @@
 /*   By: gpecelli <gpecelli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/10 13:00:46 by marvin            #+#    #+#             */
-/*   Updated: 2026/09/03 10:27:35 by gpecelli         ###   ########.fr       */
+/*   Updated: 2026/09/03 11:26:56 by gpecelli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,6 @@ void		terminate_simulation(t_table *table);
 */
 int			init_heap(t_table *table);
 void		push_heap(t_heap *heap, int coder_id, long long priority);
-void		pop_heap(t_heap *heap);
 void		remove_heap_node(t_heap *heap, int coder_id);
 void		heapify_up(t_heap *heap, int index);
 void		heapify_down(t_heap *heap, int index);
