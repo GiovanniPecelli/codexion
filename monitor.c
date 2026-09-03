@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   monitor.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: gpecelli <gpecelli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/08 17:34:20 by marvin            #+#    #+#             */
-/*   Updated: 2026/09/02 18:40:34 by marvin           ###   ########.fr       */
+/*   Updated: 2026/09/03 10:41:23 by gpecelli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,20 @@ void	terminate_simulation(t_table *table)
 	pthread_mutex_lock(&table->arbiter);
 	pthread_cond_broadcast(&table->queue);
 	pthread_mutex_unlock(&table->arbiter);
+}
+
+static int	is_burnout(t_table *table, long long last_time, int i)
+{
+	if ((get_time() - last_time) >= table->rules.time_to_burnout)
+	{
+		pthread_mutex_lock(&table->print_mutex);
+		printf("%lld %d burned out\n",
+			get_time() - table->start_time, table->coders[i].id);
+		pthread_mutex_unlock(&table->print_mutex);
+		terminate_simulation(table);
+		return (0);
+	}
+	return (1);
 }
 
 static int	check_burnout(t_table *table)
@@ -39,15 +53,7 @@ static int	check_burnout(t_table *table)
 			i++;
 			continue ;
 		}
-		if ((get_time() - last_time) >= table->rules.time_to_burnout)
-		{
-			pthread_mutex_lock(&table->print_mutex);
-			printf("%lld %d burned out\n",
-				get_time() - table->start_time, table->coders[i].id);
-			pthread_mutex_unlock(&table->print_mutex);
-			terminate_simulation(table);
-			return (0);
-		}
+		is_burnout(table, last_time, i);
 		i++;
 	}
 	return (1);

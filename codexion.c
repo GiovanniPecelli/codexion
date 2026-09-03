@@ -3,30 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   codexion.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: gpecelli <gpecelli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/07 11:50:22 by marvin            #+#    #+#             */
-/*   Updated: 2026/09/02 18:13:28 by marvin           ###   ########.fr       */
+/*   Updated: 2026/09/03 10:37:06 by gpecelli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
-/*
-** Handles the primary logic for each coder thread, including
-** grabbing dongles and simulating the coding process.
-*/
-void	*coder_routine(void *arg)
+static void	coder_loop(t_coder *coder)
 {
-	t_coder	*coder;
-
-	coder = (t_coder *)arg;
-	if (coder->rules->num_coders == 1)
-	{
-		while (get_simulation_status(coder->table) == 1)
-			usleep(1000);
-		return (NULL);
-	}
 	while (get_simulation_status(coder->table) == 1)
 	{
 		if (coder->rules->compiles_required > 0
@@ -49,12 +36,39 @@ void	*coder_routine(void *arg)
 		print_status(coder->table, coder->id, "is refactoring");
 		ft_usleep(coder->rules->time_to_refactor, coder->table);
 	}
+}
+
+/*
+** Handles the primary logic for each coder thread, including
+** grabbing dongles and simulating the coding process.
+*/
+void	*coder_routine(void *arg)
+{
+	t_coder	*coder;
+
+	coder = (t_coder *)arg;
+	if (coder->rules->num_coders == 1)
+	{
+		while (get_simulation_status(coder->table) == 1)
+			usleep(1000);
+		return (NULL);
+	}
+	coder_loop(coder);
 	return (NULL);
 }
 
 /*
-** table->coders[i].last_compile_time is signed here because
-** the program need to take the relative start_time of the program
+** info:
+1)  table->coders[i].last_compile_time is signed here because
+    the program need to take the relative start_time of the program
+2)  pthread_create(
+        1.where pthread_create() will store the ID of the newly thread,
+        2.use attributes to configure things (NULL = default attributes),
+        3.the function that the new thread will execute.
+        4.the argument that will be passed to the executable function
+    )
+3)  pthread_join()
+    wait the finish for the each previously created thread
 ** 
 */
 int	start_simulation(t_table *table)

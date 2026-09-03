@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   codexion.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: gpecelli <gpecelli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/10 13:00:46 by marvin            #+#    #+#             */
-/*   Updated: 2026/09/02 15:51:06 by marvin           ###   ########.fr       */
+/*   Updated: 2026/09/03 10:27:35 by gpecelli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,42 +90,46 @@ typedef struct s_table
 /*
 ** init_rules.c
 */
-int					fill_rules(char **argv, t_rules *rules);
-int					is_number(char *arg);
-int					init_rules(int argc, char **argv, t_rules *rules);
+int			fill_rules(char **argv, t_rules *rules);
+int			is_number(char *arg);
+int			init_rules(int argc, char **argv, t_rules *rules);
 
 /*
 ** init_table.c
 */
-int					table_allocation(t_table *table);
-int					init_table(t_table *table);
+int			table_allocation(t_table *table);
+int			init_table(t_table *table);
 
 /*
 ** dongles_utils.c / utils.c
 */
-void				take_dongles(t_coder *coder, t_table *table);
-void				release_dongles(t_coder *coder, t_table *table);
-void				ft_usleep(long long time_to_compile, t_table *table);
-long long			get_time(void);
-void				print_status(t_table *table, int id, char *status);
-void				finish_program(t_table *table);
-int					get_simulation_status(t_table *table);
-void				set_simulation_status(t_table *table, int status);
+void		take_dongles(t_coder *coder, t_table *table);
+void		release_dongles(t_coder *coder, t_table *table);
+void		ft_usleep(long long time_to_compile, t_table *table);
+long long	get_time(void);
+long long	get_max_cooldown(long long left_cooldown,
+				long long right_cooldown);
+void		print_status(t_table *table, int id, char *status);
+void		finish_program(t_table *table);
+int			get_simulation_status(t_table *table);
+int			share_dongles(t_coder *coder1, t_coder *coder2);
+void		set_simulation_status(t_table *table, int status);
+void		set_time(t_table *table, t_coder *coder);
 
 /*
 ** codexion.c / monitor.c
 */
-void				*coder_routine(void *arg);
-void				*monitor_routine(void *arg);
-void				terminate_simulation(t_table *table);
+void		*coder_routine(void *arg);
+void		*monitor_routine(void *arg);
+void		terminate_simulation(t_table *table);
 /*
 ** heap.c / heap_utils.c
 */
-int					init_heap(t_table *table);
-void				push_heap(t_heap *heap, int coder_id, long long priority);
-void				pop_heap(t_heap *heap);
-void				remove_heap_node(t_heap *heap, int coder_id);
-void				heapify_up(t_heap *heap, int index);
-void				heapify_down(t_heap *heap, int index);
+int			init_heap(t_table *table);
+void		push_heap(t_heap *heap, int coder_id, long long priority);
+void		pop_heap(t_heap *heap);
+void		remove_heap_node(t_heap *heap, int coder_id);
+void		heapify_up(t_heap *heap, int index);
+void		heapify_down(t_heap *heap, int index);
 
 #endif

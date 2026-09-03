@@ -12,8 +12,8 @@ CFLAGS = -Wall -Wextra -Werror -pthread
 
 SRCS = codexion.c monitor.c\
        init_rules.c \
-       init_table.c \
-       utils.c dongles_utils.c heap.c heap_utils.c
+       init_table.c dongles_utils.c\
+       utils.c dongles.c heap.c heap_utils.c
 
 OBJS = $(SRCS:.c=.o)
 
